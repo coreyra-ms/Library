@@ -1,0 +1,69 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dataDiskInfo":{
+            "type": "array"
+        },
+        "vmName": {
+            "type": "string"
+        },
+        "AzureSecurityGroupInformation": {
+            "type": "array"
+        },
+        "NetworkInterfaceCardInformation": {
+            "type": "array"
+        }
+    },
+    "variables": {
+        "copy": [
+            {
+                "name": "diskCopy",
+                "count": "[length(parameters('dataDiskInfo'))]",
+                "input": {
+                    "name": "[concat(parameters('vmName'), '-datadisk',copyIndex('diskCopy'))]",
+                    "lun": "[copyIndex('diskCopy')]",
+                    "managedDisk": {
+                        "storageAccountType": "Standard_LRS"
+                    },
+                    "createOption": "Empty",
+                    "caching": "ReadWrite",
+                    "diskSizeGB": "[parameters('dataDiskInfo')[copyIndex('diskCopy')]]"                    
+                }
+            },
+            {
+                "name": "ASGCopy",
+                "count": "[length(parameters('AzureSecurityGroupInformation'))]",
+                "input": {
+                    "id": "[resourceId('Microsoft.Network/applicationSecurityGroups', concat('ASG_', parameters('AzureSecurityGroupInformation')[copyIndex('ASGCopy')]))]"
+                }
+            },
+            {
+                "name": "NICCopy",
+                "count": "[length(parameters('NetworkInterfaceCardInformation'))]",
+                "input": {
+                    "id": "[resourceId('Microsoft.Network/networkInterfaces',concat('NIC_', parameters('NetworkInterfaceCardInformation')[copyIndex('NICCopy')]))]",
+                    "properties":{
+                        "primary": "[if(greater(copyIndex('NICCopy'),0),'false','true')]"
+                    }                    
+                }
+            }
+        ]     
+    },
+    "resources": [       
+    ],
+    "outputs": {
+        "diskResult": {
+            "type": "array",
+            "value": "[take(variables('diskCopy'),length(parameters('dataDiskInfo')))]"
+        },
+        "asgResult": {
+            "type": "array",
+            "value": "[take(variables('ASGCopy'),length(parameters('AzureSecurityGroupInformation')))]"
+        },
+        "nicResult": {
+            "type": "array",
+            "value": "[take(variables('NICCopy'),length(parameters('NetworkInterfaceCardInformation')))]"
+        }
+    }
+}
