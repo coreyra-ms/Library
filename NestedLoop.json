@@ -39,12 +39,12 @@
                 }
             },
             {
-                "name": "NICCopy",
+                "name": "NICCopy2",
                 "count": "[length(parameters('NetworkInterfaceCardInformation'))]",
                 "input": {
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces',concat('NIC_', parameters('NetworkInterfaceCardInformation')[copyIndex('NICCopy')]))]",
+                    "id": "[resourceId('Microsoft.Network/networkInterfaces',concat('NIC_', parameters('NetworkInterfaceCardInformation')[copyIndex('NICCopy2')]))]",
                     "properties":{
-                        "primary": "[if(greater(copyIndex('NICCopy'),0),'false','true')]"
+                        "primary": "[if(greater(copyIndex('NICCopy2'),0),'false','true')]"
                     }                    
                 }
             }
@@ -63,7 +63,7 @@
         },
         "nicResult": {
             "type": "array",
-            "value": "[take(variables('NICCopy'),length(parameters('NetworkInterfaceCardInformation')))]"
+            "value": "[take(variables('NICCopy2'),length(parameters('NetworkInterfaceCardInformation')))]"
         }
     }
 }
