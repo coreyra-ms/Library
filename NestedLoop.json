@@ -35,14 +35,14 @@
                 "name": "ASGCopy",
                 "count": "[length(parameters('AzureSecurityGroupInformation'))]",
                 "input": {
-                    "id": "[resourceId('Microsoft.Network/applicationSecurityGroups', concat('ASG_', parameters('AzureSecurityGroupInformation')[copyIndex('ASGCopy')]))]"
+                    "id": "[resourceId('Microsoft.Network/applicationSecurityGroups',parameters('AzureSecurityGroupInformation')[copyIndex('ASGCopy')])]"
                 }
             },
             {
                 "name": "NICCopy2",
                 "count": "[length(parameters('NetworkInterfaceCardInformation'))]",
                 "input": {
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces',concat('NIC_', parameters('NetworkInterfaceCardInformation')[copyIndex('NICCopy2')]))]",
+                    "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('NetworkInterfaceCardInformation')[copyIndex('NICCopy2')])]",
                     "properties":{
                         "primary": "[if(greater(copyIndex('NICCopy2'),0),'false','true')]"
                     }                    
