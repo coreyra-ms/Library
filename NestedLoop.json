@@ -21,7 +21,7 @@
                 "name": "diskCopy",
                 "count": "[length(parameters('dataDiskInfo'))]",
                 "input": {
-                    "name": "[concat(parameters('vmName'), '-datadisk',copyIndex('diskCopy'))]",
+                    "name": "[concat('DDisk_',parameters('vmName'),'-',copyIndex('diskCopy'))]",
                     "lun": "[copyIndex('diskCopy')]",
                     "managedDisk": {
                         "storageAccountType": "Standard_LRS"
