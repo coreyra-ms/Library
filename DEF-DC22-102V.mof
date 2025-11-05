@@ -1,0 +1,159 @@
+/*
+@TargetNode='DEF-DC22-102V'
+@GeneratedBy=coreyra
+@GenerationDate=09/30/2025 09:01:52
+@GenerationHost=LAPTOP-18767693
+*/
+
+instance of MSFT_WindowsFeature as $MSFT_WindowsFeature1ref
+{
+ModuleName = "PSDscResources";
+ Name = "DNS";
+ Ensure = "Present";
+ ResourceID = "[WindowsFeature]DNSServer";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::21::9::WindowsFeature";
+ ModuleVersion = "2.12.0.0";
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of MSFT_WindowsFeature as $MSFT_WindowsFeature2ref
+{
+ModuleName = "PSDscResources";
+ Name = "RSAT-DNS-Server";
+ Ensure = "Present";
+ ResourceID = "[WindowsFeature]RsatDnsServer";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::27::9::WindowsFeature";
+ ModuleVersion = "2.12.0.0";
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of MSFT_WindowsFeature as $MSFT_WindowsFeature3ref
+{
+ModuleName = "PSDscResources";
+ Name = "AD-Domain-Services";
+ Ensure = "Present";
+ ResourceID = "[WindowsFeature]ADDSInstall";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::33::9::WindowsFeature";
+ ModuleVersion = "2.12.0.0";
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of MSFT_WindowsFeature as $MSFT_WindowsFeature4ref
+{
+ModuleName = "PSDscResources";
+ Name = "RSAT-ADDS";
+ Ensure = "Present";
+ ResourceID = "[WindowsFeature]ADDSTools";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::39::9::WindowsFeature";
+ ModuleVersion = "2.12.0.0";
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of MSFT_WindowsFeature as $MSFT_WindowsFeature5ref
+{
+ModuleName = "PSDscResources";
+ Name = "RSAT-AD-PowerShell";
+ Ensure = "Present";
+ ResourceID = "[WindowsFeature]ADDSPowerShellTools";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::45::9::WindowsFeature";
+ ModuleVersion = "2.12.0.0";
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of MSFT_WindowsFeature as $MSFT_WindowsFeature6ref
+{
+ModuleName = "PSDscResources";
+ Name = "RSAT-DFS-Mgmt-Con";
+ Ensure = "Present";
+ ResourceID = "[WindowsFeature]ADDFSMgmtTools";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::51::9::WindowsFeature";
+ ModuleVersion = "2.12.0.0";
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of DSC_PendingReboot as $DSC_PendingReboot1ref
+{
+ModuleName = "ComputerManagementDsc";
+ ResourceID = "[PendingReboot]RebootPriorToDCPromotion";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::57::9::PendingReboot";
+ Name = "RebootPriorToDCPromotion";
+ ModuleVersion = "10.0.0";
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of MSFT_Credential as $MSFT_Credential1ref
+{
+Password = "1qazxsw2!QAZXSW@";
+ UserName = "sghlglobal";
+
+};
+
+instance of MSFT_WaitForADDomain as $MSFT_WaitForADDomain1ref
+{
+ModuleName = "ActiveDirectoryDsc";
+ DomainName = "sghomelabs.com";
+ WaitForValidCredentials = True;
+ PsDscRunAsCredential = $MSFT_Credential1ref;
+ WaitTimeout = 600;
+ ResourceID = "[WaitForADDomain]sghomelabs.com";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::87::13::WaitForADDomain";
+ RestartCount = 2;
+ ModuleVersion = "6.7.0";
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of MSFT_Credential as $MSFT_Credential2ref
+{
+Password = "1qazxsw2!QAZXSW@";
+ UserName = "sghlglobal";
+
+};
+
+instance of MSFT_Credential as $MSFT_Credential3ref
+{
+Password = "1qazxsw2!QAZXSW@";
+ UserName = "sghlglobal";
+
+};
+
+instance of MSFT_ADDomainController as $MSFT_ADDomainController1ref
+{
+ModuleName = "ActiveDirectoryDsc";
+ DatabasePath = "C:\\NTDS";
+ SafemodeAdministratorPassword = $MSFT_Credential2ref;
+ IsGlobalCatalog = True;
+ DomainName = "sghomelabs.com";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::97::13::ADDomainController";
+ LogPath = "C:\\NTDS";
+ ModuleVersion = "6.7.0";
+ Credential = $MSFT_Credential3ref;
+ SysvolPath = "C:\\SYSVOL";
+ ResourceID = "[ADDomainController]AdditionalDomainController";
+
+DependsOn = {
+    "[WindowsFeature]ADDSInstall",
+     "[WaitForADDomain]sghomelabs.com"};
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of DSC_PendingReboot as $DSC_PendingReboot2ref
+{
+ModuleName = "ComputerManagementDsc";
+ ResourceID = "[PendingReboot]RebootAfterDCPromotion";
+ SourceInfo = "C:\\Users\\coreyra\\OneDrive - Microsoft\\Documents\\WindowsPowerShell\\Bicep\\TestLab09272025\\DSC_2_Templates\\DomainControllersBuild.ps1::109::13::PendingReboot";
+ Name = "RebootAfterDCPromotion";
+ ModuleVersion = "10.0.0";
+
+DependsOn = {
+    "[ADDomainController]AdditionalDomainController"};
+ ConfigurationName = "DomainControllersBuild";
+};
+instance of OMI_ConfigurationDocument
+
+                    {
+ Version="2.0.0";
+
+                        MinimumCompatibleVersion = "2.0.0";
+
+                        CompatibleVersionAdditionalProperties= {"Omi_BaseResource:ConfigurationName"};
+
+                        Author="coreyra";
+
+                        GenerationDate="09/30/2025 09:01:52";
+
+                        GenerationHost="LAPTOP-18767693";
+
+                        Name="DomainControllersBuild";
+
+                    };
